@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Consumer;
 
 class HomeController extends Controller
 {
@@ -25,6 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {   
+        $consumer_info = Consumer::where('CONSUMER_NO', Auth::guard('user')->user()->consumer_number)->get();
+        dump($consumer_info);
         return view('home');
     }
 }
