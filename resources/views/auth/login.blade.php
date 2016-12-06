@@ -95,16 +95,16 @@
         {!!form::close()!!}
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-4">
         <h2><span class="label label-primary">Exisiting User Login</span></h2>
         <div style="margin-top: 40px;"></div>
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
             {{ csrf_field() }}
             <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Consumer Number</label>
+                <label class="col-md-4 control-label">Consumer Number/Email</label>
 
                 <div class="col-md-8">
-                    <input type="text" placeholder="Consumer Number" class="form-control" name="username" value="{{ old('username') }}">
+                    <input type="text" placeholder="Consumer Number or Email" class="form-control" name="username" value="{{ old('username') }}">
 
                     @if ($errors->has('username'))
                         <span class="help-block">

@@ -21,6 +21,12 @@ Route::get('/login', [
     'uses' => 'Auth\AuthController@login'
 ]);
 
+Route::post('/login', [
+    'as' => 'user.post.login',
+    'middleware' => ['web'],
+    'uses' => 'UsersController@postLogin'
+]);
+
 Route::get('/logoff', [
     'as' => 'user.logout',
     'middleware' => ['web'],

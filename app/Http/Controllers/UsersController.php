@@ -66,4 +66,18 @@ class UsersController extends Controller
     		return Redirect::route('user.otp')->with('message', $message);
     	}
     }
+
+    public function postLogin( Request $request) {
+        $username = $request->username;
+        $credentials = [];
+        $credentials['password'] = $request->password;
+        if (!filter_var($username, FILTER_VALIDATE_EMAIL) === false) {
+          $credentials['email'] = $username;
+        }else{
+            $credentials['consumer_number'] = $username;
+        }
+        if (Auth::attempt($credentials)) {
+            return Redirect::route('user.home');
+        }
+    }
 }
