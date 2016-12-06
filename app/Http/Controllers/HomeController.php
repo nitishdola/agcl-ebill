@@ -50,7 +50,7 @@ class HomeController extends Controller
     private function bill_details( $bill_number = '') {
         $bill_number = '025-002-01245/1101';
         if($bill_number != '') {
-            return BillChild::where('Bill_No', $bill_number)->select('Demand_GS', 'Demand_Royalty', 'Demand_MM', 'Demand_HC', 'Demand_Tax', 'Demand_Service_Tax', 'OUTSTANDING', 'LATE_FINE', 'ADJUSTMENTS', 'Bill_Date', 'From_Dt', 'To_Dt', 'payByDate', 'Demand_TC')->first();
+            return BillChild::where('Bill_No', $bill_number)->select('Demand_GS', 'Demand_Royalty', 'Demand_MM', 'Demand_HC', 'Demand_Tax', 'Demand_Service_Tax', 'OUTSTANDING', 'LATE_FINE', 'ADJUSTMENTS', 'Bill_Date', 'From_Dt', 'To_Dt', 'payByDate', 'Demand_TC', 'LMC_DEMAND', 'SPECIAL_READING_DEMAND', 'METER_TEST_DEMAND', 'DAMAGE_METER_DEMAND')->first();
         }
         return false;
     }

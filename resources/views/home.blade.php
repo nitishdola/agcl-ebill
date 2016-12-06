@@ -140,7 +140,7 @@
 
 					<tr>
 						<td>TC @ {{ $montly_billing->TC }}</td>
-						<td> {{ $bill_details->Demand_TC }}
+						<td> {{ $bill_details->Demand_TC }}</td>
 					</tr>
 
 					<tr>
@@ -151,6 +151,50 @@
 					<tr>
 						<th>Total TC</th>
 						<th> {{ $bill_details->Demand_TC + $bill_details->Demand_Service_Tax }} </th>
+					</tr>
+				</table>
+			</div>
+
+			<div class="row" style="margin-top:20px;">
+				<table class="table tax-table" style="width: 75%">
+					<tr>
+						<td>Last Mile Connectivity</td>
+						<td>&nbsp;</td>
+						<td> {{ $bill_details->LMC_DEMAND }}</td>
+					</tr>
+
+					<tr>
+						<td>Other Charges </td>
+						<td>a) Extra charge for special reading beyond work hours</td>
+						<td> {{ $bill_details->SPECIAL_READING_DEMAND }}</td>
+					</tr>
+
+					<tr>
+						<td>&nbsp;</td>
+						<td>b) Extra charge for meter testing</td>
+						<td> {{ $bill_details->METER_TEST_DEMAND }}</td>
+					</tr>
+
+					<tr>
+						<td>&nbsp;</td>
+						<td>c) Extra charge for burnt/damage/tempered meter</td>
+						<td> {{ $bill_details->DAMAGE_METER_DEMAND }}</td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="row" style="margin-top:20px;">
+				
+				<table class="table tax-table">
+					<tr>
+						<th>TOTAL CHARGES</th>
+						<th> 258.00</th>
+					</tr>
+
+					<tr>
+						<td>ADJUSTMENTS</td>
+						<td>&nbsp;</td>
+						<td> {{ $bill_details->LMC_DEMAND }}</td>
 					</tr>
 				</table>
 			</div>
