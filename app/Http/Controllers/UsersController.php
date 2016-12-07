@@ -27,6 +27,7 @@ class UsersController extends Controller
     	$data['password'] = bcrypt( $request->password );
     	if($user = User::create($data)) {
     		//send OTP via SMS / Mail
+            
             $enc_user_id = Crypt::encrypt($user->id);
             $pass = Crypt::encrypt($request->password);
             return view('users.add_otp', compact('enc_user_id', 'pass'));

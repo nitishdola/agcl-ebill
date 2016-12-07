@@ -38,7 +38,14 @@
     </div>
 
     <div class="wrapper">
-        
+        <div class="col-md-12">
+            @if(Session::has('message'))
+            <div class="alert {{ Session::get('alert-class', 'alert-info') }}">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                {!! Session::get('message') !!}
+            </div>
+            @endif
+        </div>
         @yield('content')
         <!-- Footer -->
         @include('layouts.common.footer')

@@ -1,205 +1,72 @@
 @extends('layouts.user')
-@section('pageCss')
-<style>
-.align-center {
-	text-align: center;
-}
-.table td {
-	text-align: center;
-}
-.tax-table td {
-	text-align: left;
-}
-.tax-table th {
-	font-weight: 400 !important;
-}
-</style>
-@stop
+
 @section('content')
 <div class="container">
-    <div class="col-md-12">
-        <!-- <h4>Hello {{ $consumer_info->FIRST_NAME }} {{ $consumer_info->LAST_NAME }} !</h4>
-        <h6> Current Bill </h6> -->
-        @if($consumer_info == null || $meter_reading_data == null || $bill_details == null)
+    <div class="col-lg-6">
+        <div class="col-sm-12 col-lg-10">
+            <div class="widget-simple-chart text-left card-box">
+                <p class="text-muted text-nowrap">Consumer Name</p>
+                <h3 class="text-success counter">{{ $consumer_info->FIRST_NAME }} {{ $consumer_info->LAST_NAME }}</h3>
 
-        <div class="alert alert-warning">
-		  <strong>Oops !</strong> No Bills Found .
-		</div>
-		@else
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3 align-center">
-				<strong>ASSAM GAS COMPANY LTD</strong>
-				<br><strong>P.O. DULIAJAN</strong>
-				<br><strong>DIST DIBRUGARH, ASSAM-786602</strong>
-				<br><strong>RETAIL INVOICE</strong> FOR {{ $consumer_info->consumer_type['TYPE_OF_CUSTOMER'] }} CONSUMER OF {{ $grid_info->GRID_NAME}}
-			</div>
-		</div>
+                <p class="text-muted text-nowrap">Consumer Number</p>
+                <h3 class="text-success counter">{{ $consumer_info->CONSUMER_NO }}</h3>
 
-		<div class="bill-info" style="font-size: 13px; line-height: 18px;">
-			<div class="row" style="margin-top:20px;">
-				<div class="col-md-6">
-					<div class="col-md-5"> Consumer Account No. </div>
-					<div class="col-md-7">: {{ $consumer_info->CONSUMER_NO }}</div>
+                <p class="text-muted text-nowrap">Consumer Type</p>
+                <h3 class="text-success counter">{{ $consumer_info->consumer_type['TYPE_OF_CUSTOMER'] }}</h3>
+                <hr>
+                <h4 class="text-dark  header-title m-t-0"> View Bills </h4>
+                {!! Form::open(array('route' => 'user.view_bill', 'method' => 'get', 'id' => 'user.view_bill', 'class' => 'form-horizontal row-border')) !!}
+            	<div class="form-group">
+	                <div class="col-md-6">
+	                    <select name="ym" class="form-control">
+	                    	@for ($i=1; $i<=6; $i++)
+	                    		<?php $ym = date('ym', strtotime("-$i month")); ?>
+	                    		<option value="{{ $ym }}">{{ date('M Y', strtotime("-$i month")) }}</option>
+	                    	@endfor
+	                    </select>
+	                </div>
+	            </div>
 
-					<div class="col-md-5"> Consumer Name </div>
-					<div class="col-md-7">: {{ $consumer_info->FIRST_NAME }} {{ $consumer_info->LAST_NAME }}</div>
+	            <div class="form-group">
+	                <div class="col-md-6">
+	                    <button type="submit" id="register_btn" class="btn btn-primary">
+	                        <i class="fa fa-btn fa-sign-in"></i> Search
+	                    </button>
+	                </div>
+	            </div>
 
-					<div class="col-md-5"> Address </div>
-					<div class="col-md-7">: {{ $consumer_info->ADDRESS1 }} {{ $consumer_info->ADDRESS2 }} {{ $consumer_info->ADDRESS3 }}</div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
 
+    <div class="col-lg-6">
+    	<div class="card-box">
+            <h4 class="text-dark  header-title m-t-0">Latest Bills Paid </h4>
+            <p class="text-muted m-b-25 font-13">
+                Your latest paid bills
+            </p>
+
+            <div class="table-responsive">
+                <div class="alert alert-warning">
+				  <strong>Oops !</strong> No recent bills found .
 				</div>
+            </div>
+	    </div>
 
-				<div class="col-md-6">
-					<div class="col-md-5"> Bill No. </div>
-					<div class="col-md-7">: {{ $bill_no }}</div>
+	    <div class="card-box">
+            <h4 class="text-dark  header-title m-t-0">View Bills </h4>
+            <p class="text-muted m-b-25 font-13">
+                View bills of last 3 months
+            </p>
 
-					<div class="col-md-5"> Invoice Date </div>
-					<div class="col-md-7">: {{ date('d-M-y', strtotime($bill_details->Bill_Date)) }}</div>
-
-					<div class="col-md-5"> Bill Period </div>
-					<div class="col-md-7">: {{ date('d-M-y', strtotime($bill_details->From_Dt)) }} to {{ date('d-M-y', strtotime($bill_details->To_Dt)) }}</div>
-
-					<div class="col-md-5"> Payment Due On </div>
-					<div class="col-md-7">: {{ date('d-M-y', strtotime($bill_details->payByDate)) }}</div>
-					<div style="margin-top:10px;">&nbsp;</div>
-					<div class="col-md-5"> Next Reading Due On </div>
-					<div class="col-md-7">: {{ date('d-M-y', strtotime("+2 months", strtotime($bill_details->From_Dt))) }}</div>
-				</div>
-			</div>
-
-			<div class="row" style="margin-top:20px;">
-				<div class="col-md-6">
-					<div class="col-md-5"> Phone Number</div>
-					<div class="col-md-7">: {{ $grid_info->PHONE }}</div>
-
-					<div class="col-md-5"> Consumer Category </div>
-					<div class="col-md-7">: <strong> Metered {{ $consumer_info->consumer_type['TYPE_OF_CUSTOMER'] }} {{ date('M\'y', strtotime($bill_details->From_Dt)) }} </strong></div>
-
-				</div>
-			</div>
-
-			<div class="row" style="margin-top:20px;">
-				<table class="table">
-					<tr>
-						<td>Meter No</td>
-						<td>Prev. Reading</td>
-						<td>Prev. Reading Date</td>
-						<td>Curr Reading</td>
-						<td>Curr Reading Date</td>
-						<td>Corr. Fac</td>
-						<td>Consumption</td>
-					</tr>
-
-					<tr>
-						<td>{{ $consumer_info->METERNO }}</td>
-						<td>{{ $meter_reading_data->PREV_READ }}</td>
-						<td>{{ date('d-M-Y', strtotime($meter_reading_data->PREV_READ_DT)) }}</td>
-						<td>{{ $meter_reading_data->CURR_READ }}</td>
-						<td>{{ date('d-M-Y', strtotime($meter_reading_data->CURR_READ_DT)) }}</td>
-						<td>{{ $meter_reading_data->CORRFACTOR }}</td>
-						<td>{{ $meter_reading_data->DIFF_READ }}</td>
-					</tr>
-
-					
-				</table>
-
-			</div>
-
-			<div class="row" style="margin-top:20px;">
-				<p> Average consumption of last six months (In case of domestic consumers) </p>
-				<strong>Minimum Monthly Consumption : {{ $meter_reading_data->MIN_QTY }} SCUM</strong>
-			</div>
-
-			<div class="row" style="margin-top:20px;">
-				<table class="table tax-table">
-					<tr>
-						<td>Gas Price @&#8377; {{ $montly_billing->GAS_PRICE }}</td>
-						<td> {{ $bill_details->Demand_GS }}</td>
-					</tr>
-					<tr>
-						<td>Roaylity @ {{ $montly_billing->ROYALTY }}</td>
-						<td> {{ $bill_details->Demand_Royalty }}
-					</tr>
-					<tr>
-						<td>Marketing Margin @&#8377; {{ $montly_billing->MM }} </td>
-						<td> {{ $bill_details->Demand_MM }}
-					</tr>
-					<tr>
-						<td>Handling Charges @&#8377; {{ $montly_billing->HC }} </td>
-						<td> {{ $bill_details->Demand_HC }}
-					</tr>
-					<tr>
-						<td>VAT @ {{ $montly_billing->VAT }}</td>
-						<td> {{ $bill_details->Demand_Tax }}
-					</tr>
-
-					<tr>
-						<th> Total Gas Sales</th>
-						<th> {{ $bill_details->Demand_GS+$bill_details->Demand_Royalty+$bill_details->Demand_MM+$bill_details->Demand_HC+$bill_details->Demand_Tax}} </th>
-					</tr>
-
-					<tr>
-						<td>TC @ {{ $montly_billing->TC }}</td>
-						<td> {{ $bill_details->Demand_TC }}</td>
-					</tr>
-
-					<tr>
-						<td>Service Tax @ {{ $montly_billing->ST }}</td>
-						<td> {{ $bill_details->Demand_Service_Tax }}</td>
-					</tr>
-
-					<tr>
-						<th>Total TC</th>
-						<th> {{ $bill_details->Demand_TC + $bill_details->Demand_Service_Tax }} </th>
-					</tr>
-				</table>
-			</div>
-
-			<div class="row" style="margin-top:20px;">
-				<table class="table tax-table" style="width: 75%">
-					<tr>
-						<td>Last Mile Connectivity</td>
-						<td>&nbsp;</td>
-						<td> {{ $bill_details->LMC_DEMAND }}</td>
-					</tr>
-
-					<tr>
-						<td>Other Charges </td>
-						<td>a) Extra charge for special reading beyond work hours</td>
-						<td> {{ $bill_details->SPECIAL_READING_DEMAND }}</td>
-					</tr>
-
-					<tr>
-						<td>&nbsp;</td>
-						<td>b) Extra charge for meter testing</td>
-						<td> {{ $bill_details->METER_TEST_DEMAND }}</td>
-					</tr>
-
-					<tr>
-						<td>&nbsp;</td>
-						<td>c) Extra charge for burnt/damage/tempered meter</td>
-						<td> {{ $bill_details->DAMAGE_METER_DEMAND }}</td>
-					</tr>
-				</table>
-			</div>
-
-			<div class="row" style="margin-top:20px;">
-				
-				<table class="table tax-table">
-					<tr>
-						<th>TOTAL CHARGES</th>
-						<th> 258.00</th>
-					</tr>
-
-					<tr>
-						<td>ADJUSTMENTS</td>
-						<td>&nbsp;</td>
-						<td> {{ $bill_details->LMC_DEMAND }}</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-		@endif
+            @for ($i=1; $i<=3; $i++)
+            <?php $ym = date('ym', strtotime("-$i month")); ?>
+            <p class="text-muted m-b-25 font-13">
+                <a href=" {{ route('user.view_bill', ['ym' => $ym])}}">{{ date('M Y', strtotime("-$i month")) }}</a>
+            </p>
+            @endfor
+	    </div>
     </div>
 </div>
 

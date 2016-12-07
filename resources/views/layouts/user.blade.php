@@ -41,14 +41,6 @@
             </div>
         </div>
         <!-- End topbar -->
-
-        <!-- Navbar Start -->
-        <div class="navbar-custom">
-            <div class="container">
-                @include('layouts.common.navigation') 
-                <!-- end #navigation -->
-            </div> <!-- end container -->
-        </div> <!-- end navbar-custom -->
     </header>
     <!-- End Navigation Bar-->
 

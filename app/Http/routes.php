@@ -11,9 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [
+    'as' => '.home',
+    'middleware' => ['auth'],
+    'uses' => 'HomeController@index'
+]);
 
 Route::get('/login', [
     'as' => 'user.login',
@@ -82,10 +85,39 @@ Route::group(['prefix'=>'user'], function() {
     ]);
 });
 
+
+Route::group(['prefix'=>'bill'], function() {
+    Route::get('/view', [
+        'as' => 'user.view_bill',
+        'middleware' => ['auth'],
+        'uses' => 'HomeController@view_bill'
+    ]);
+});
 Route::group(['prefix'=>'rest'], function() {
     Route::get('/resend-otp', [
         'as' => 'rest.resend.otp',
         'middleware' => ['web'],
         'uses' => 'RestController@resendOTP'
+    ]);
+});
+
+
+Route::group(['prefix'=>'pages'], function() {
+    Route::get('/privacy', [
+        'as' => 'privacy',
+        'middleware' => ['web'],
+        'uses' => 'PagesController@privacy'
+    ]);
+
+    Route::get('/feedback', [
+        'as' => 'feedback',
+        'middleware' => ['web'],
+        'uses' => 'PagesController@feedback'
+    ]);
+
+    Route::post('/feedback', [
+        'as' => 'post.feedback',
+        'middleware' => ['web'],
+        'uses' => 'PagesController@postFeedback'
     ]);
 });
